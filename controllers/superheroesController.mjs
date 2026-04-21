@@ -1,8 +1,10 @@
 import {
     obtenerSuperheroePorId,
     obtenerTodosLosSuperheroes,
-    buscarSuperheroesPorAtributo,
-    obtenerSuperheroesMayoresDe30
+    crearSuperheroe,
+    actualizarSuperheroe,
+    eliminarSuperheroePorId,
+    eliminarSuperheroePorNombre,
 } from '../services/superheroesService.mjs';
 
 import {
@@ -98,6 +100,93 @@ try {
     res.status(500).send({
         mensaje: 'Error al obtener superhéroes mayores de 30',
         error: error.message
+    });
+}
+}
+export async function crearSuperheroeController(req, res) {
+try {
+    const datos = req.body;
+
+    const nuevoSuperheroe = await crearSuperheroe(datos);
+
+    const formateado = renderizarSuperheroe(nuevoSuperheroe);
+
+    res.status(201).json(formateado);
+
+} catch (error) {
+    res.status(500).send({
+    mensaje: 'Error al crear el superhéroe',
+    error: error.message
+    });
+}
+}
+export async function actualizarSuperheroeController(req, res) {
+try {
+    const { id } = req.params;
+    const datos = req.body;
+
+    const actualizado = await actualizarSuperheroe(id, datos);
+
+    if (!actualizado) {
+    return res.status(404).send({
+        mensaje: 'Superhéroe no encontrado'
+    });
+    }
+
+    const formateado = renderizarSuperheroe(actualizado);
+
+    res.status(200).json(formateado);
+
+} catch (error) {
+    res.status(500).send({
+    mensaje: 'Error al actualizar el superhéroe',
+    error: error.message
+    });
+}
+}
+export async function eliminarSuperheroePorIdController(req, res) {
+try {
+    const { id } = req.params;
+
+    const eliminado = await eliminarSuperheroePorId(id);
+
+    if (!eliminado) {
+    return res.status(404).send({
+        mensaje: 'Superhéroe no encontrado'
+    });
+    }
+
+    const formateado = renderizarSuperheroe(eliminado);
+
+    res.status(200).json(formateado);
+
+} catch (error) {
+    res.status(500).send({
+    mensaje: 'Error al eliminar el superhéroe',
+    error: error.message
+    });
+}
+}
+export async function eliminarSuperheroePorNombreController(req, res) {
+try {
+    const { nombre } = req.params;
+
+    const eliminado = await eliminarSuperheroePorNombre(nombre);
+
+    if (!eliminado) {
+    return res.status(404).send({
+        mensaje: 'Superhéroe no encontrado'
+    });
+    }
+
+    const formateado = renderizarSuperheroe(eliminado);
+
+    res.status(200).json(formateado);
+
+} catch (error) {
+    res.status(500).send({
+    mensaje: 'Error al eliminar el superhéroe',
+    error: error.message
     });
 }
 }

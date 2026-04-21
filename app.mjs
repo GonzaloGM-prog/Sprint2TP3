@@ -26,5 +26,6 @@ app.use((req, res) => {
 // Iniciar el servidor
 app.listen(PORT, () => {
     console.log(`Servidor escuchando en el puerto ${PORT}`);
+    console.log("USANDO ESTE PROYECTO ");
 });
 // Iniciar siempre con api los edpoints para hacer consultas, luego de correr el server
